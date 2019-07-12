@@ -2,7 +2,7 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, render_template, url_for, request, redirect
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -14,7 +14,7 @@ def create_app():
 
     @app.route('/')
     def index():
-        return "Howdy"
-    
+        return render_template('index.html')
+
     return app
 
