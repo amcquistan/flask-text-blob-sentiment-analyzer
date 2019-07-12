@@ -16,5 +16,26 @@ def create_app():
     def index():
         return render_template('index.html')
 
+
+    @app.route('/results', methods=('POST',))
+    def results():
+        url = request.form.get('url')
+
+        try:
+            # fetch page associated with url using requests
+
+            
+        except:
+            # Give error message that this was an invalid url
+            pass
+
+        # parse results using BeautifulSoup
+
+        # create TextBlob instance
+
+        # process TextBlob text analytics results
+
+        return render_template('results.html', page_results={})
+
     return app
 
