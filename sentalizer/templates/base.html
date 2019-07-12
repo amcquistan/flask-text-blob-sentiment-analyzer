@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sentializer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma-0.7.5/css/bulma.min.css') }}">
+</head>
+<body>
+  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+     <a href="/" class="navbar-item">Sentalizer</a>
+    </div>
+  </nav>
+  
+  {% block main %}{% endblock %}
+
+</body>
+</html>
