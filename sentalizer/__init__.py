@@ -77,6 +77,7 @@ def create_app():
         blob = TextBlob(soup.get_text())
 
         # process TextBlob text analytics results
+        page_results = PageSentiment(header, blob)
 
         return render_template('results.html', page_results={})
 

@@ -465,6 +465,8 @@ def results():
     blob = TextBlob(soup.get_text())
 ```
 
+Task about adding the PageSentiment class, the TextBlob.sentiment tuple field as well as the TextBlob.sentences list field of Sentence objects which as essentially like TextBlob objects but representing sentences with a words collection instead of sentences.
+
 
 ### Deploying to Virtual Private Server (VPS)
 
