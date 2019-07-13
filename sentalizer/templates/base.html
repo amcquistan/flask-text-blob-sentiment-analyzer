@@ -20,20 +20,21 @@
   <section class="hero is-light is-fullheight-with-navbar">
     <div class="hero-head">
       <div class="container">
-          {% block heading %}
-          <p class="title has-text-centered">
-            Perform Sentiment Analysis
-          </p>
-          {% endblock %}
+          {% block heading %}{% endblock %}
         
         <!-- user message can go in the section -->
         
-        
       </div>
     </div>
-  
-    {% block main %}{% endblock %}
+
+    <div class="hero-body">
+      <div class="container">
     
+        {% block main %}{% endblock %}
+    
+      </div>
+    </div>
+
   </section>
 
 </body>
