@@ -233,7 +233,7 @@ I do something similar for the results.html template which will eventually show 
 {% endblock %}
 ```
 
-Thats a good start on the templates so, I'll move on to getting the Flask application to serve up the index.html and results.html templates. Back over in the __init__.py module I add a couple of common imports from the Flask package I'll be working with in. The import I want to focus on right now is the render_template function. I use this to load the index.html template which gets processed and returned as html then returned to be served by the Flask app when the / url is requested. Below is the updated __init__.py module.
+Thats a good start on the templates so, I'll move on to getting the Flask application to serve up the index.html and results.html templates. Back over in the __init__.py module I add a few common imports from the Flask package I'll be working with in. The import I want to focus on right now is the render_template function. I use this to load the index.html template which gets processed and returned as html then returned to be served by the Flask app when the / url is requested. Below is the updated __init__.py module.
 
 
 ```
@@ -241,7 +241,7 @@ Thats a good start on the templates so, I'll move on to getting the Flask applic
 
 import os
 
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
@@ -262,7 +262,7 @@ Upon saving the __init__.py module the Flask dev server should reload itself if 
 
 *** index-scaffolding.png ***
 
-At this point I need to make a new route and view function for serving up the results.html template.  To do this I define a new function named results(...) and decorate it with the @app.route('/results') decorator and similarly have it return the template using render_template function.  However, there is one change to be made to the route(...) decorator which includes specifying that it should only accept the POST request method as shown below.
+At this point I can make a new route and view function for serving up the results.html template.  To do this I define a new function named results(...) below the @app.route('/results') decorator and, similarly have the view function return the template using render_template.  However, there is one change needed with the decorator directing it to only accept the POST request method as shown below.
 
 ```
 # __init__.py
@@ -290,7 +290,7 @@ def create_app():
 
         try:
             # fetch page associated with url using requests
-
+            pass
             
         except:
             # Give error message that this was an invalid url
@@ -309,169 +309,161 @@ def create_app():
     return app
 ```
 
-As you can see from the above newly introduced results() view function it expects to get a form field named url which can be retrieved by the form dict field on the global request object I imported from the flask package previously. I have also added some comments that describe the program flow that is to take place in the new view function to perform the text analytics. I have also introduced a new argument to the render_template function which is a keyword arg named page_results that for the moment is just an empty dictionary.
+The newly introduced results() view function expects a form field named url which can be retrieved by the form dict field on the global request object I imported from the flask package previously. I have also added comments to describe the program flow necessary to perform the text analytics followed by the use of the render_template fucntion again but, a new keyword arg ument named page_results is used which, for the moment, is just an empty dictionary.
 
-Now that I have a /results route to POST a url to I can add a form to the index.html. Notice in the below form element I've again used url_for(...) method but this time I've supplied a argument of 'results' which is the name of the view_function I want the url for POSTing the form to.
-
-```
-<!-- index.html -->
-{% extends 'base.html' %}
-
-{% block main %}
-<section class="hero is-light is-fullheight-with-navbar">
-  <div class="hero-head">
-    <div class="container">
-        <p class="title has-text-centered">
-          Enter a webpage url for Sentiment Analysis
-        </p>
-    </div>
-  </div>
-  <div class="hero-body">
-    <div class="container">
-
-      <!-- place form code here for submitting the url -->
-      <div class="columns">
-        <div class="column is-offset-2 is-8">
-          <form action="{{ url_for('results') }}" method="POST">
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input type="text" name="url" class="input" placeholder="Enter url of page to perform sentiment analysis on">
-              </div>
-              <div class="control">
-                <button class="button is-primary">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-{% endblock %}
-```
-
-Thats a good start on the templates. Next I move on to getting the Flask application to serve up the index.html and results.html templates. Back over in the __init__.py module I add a couple of common imports from the Flask package I'll be working with in. The import I want to focus on right now is the render_template function. I use this to load the index.html template which gets processed and returned as html then returned to be served by the Flask app when the / url is requested. Below is the updated __init__.py module.
-
-
-```
-# __init__.py
-
-import os
-
-from flask import Flask, render_template, url_for, request, redirect
-
-def create_app():
-    app = Flask(__name__, instance_relative_config=True)
-    
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
-
-    return app
-```
-
-Upon saving the __init__.py module the Flask dev server should reload itself if the dev server is still running, otherwise start it again, so I can reload the browser pointing to http://127.0.0.1:5000/ and see the following.
-
-*** index-scaffolding.png ***
-
-At this point I need to make a new route and view function for serving up the results.html template.  To do this I define a new function named results(...) and decorate it with the @app.route('/results') decorator and similarly have it return the template using render_template function.  However, there is one change to be made to the route(...) decorator which includes specifying that it should only accept the POST request method as shown below.
-
-```
-# __init__.py
-
-import os
-
-from flask import Flask, render_template, url_for, request, redirect
-
-def create_app():
-    app = Flask(__name__, instance_relative_config=True)
-    
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    @app.route('/')
-    def index():
-        return render_template('index.html')
-
-
-    @app.route('/results', methods=('POST',))
-    def results():
-        url = request.form.get('url')
-
-        try:
-            # fetch page associated with url using requests
-
-            
-        except:
-            # Give error message that this was an invalid url
-            pass
-
-        # parse results using BeautifulSoup
-
-        # create TextBlob instance
-
-        # process TextBlob text analytics results
-
-        return render_template('results.html', page_results={})
-
-        return render_template('results.html', page_results={})
-
-    return app
-```
-
-As you can see from the above newly introduced results() view function it expects to get a form field named url which can be retrieved by the form dict field on the global request object I imported from the flask package previously. I have also added some comments that describe the program flow that is to take place in the new view function to perform the text analytics. I have also introduced a new argument to the render_template function which is a keyword arg named page_results that for the moment is just an empty dictionary.
-
-Now that I have a /results route to POST a url to I can add a form to the index.html. Notice in the below form element I've again used url_for(...) method but this time I've supplied a argument of 'results' which is the name of the view_function I want the url for POSTing the form to.
+Now that I have a /results route to POST a url to I can add a form to index.html. Notice in the below form element I've again used url_for(...) method but this time I've supplied an argument of 'results' which is the name of the view_function for the route I want to POST the form data to.
 
 ```
 <!-- index.html -->
 {% extends 'base.html' %}
 
+{% block heading %}
+<p class="title has-text-centered">
+  Enter a webpage url for Sentiment Analysis
+</p>
+{% endblock %}
+
 {% block main %}
-<section class="hero is-light is-fullheight-with-navbar">
-  <div class="hero-head">
-    <div class="container">
-        <p class="title has-text-centered">
-          Enter a webpage url for Sentiment Analysis
-        </p>
-    </div>
-  </div>
-  <div class="hero-body">
-    <div class="container">
 
-      <!-- place form code here for submitting the url -->
-      <div class="columns">
-        <div class="column is-offset-2 is-8">
-          <form action="{{ url_for('results') }}" method="POST">
-            <div class="field has-addons">
-              <div class="control is-expanded">
-                <input type="text" name="url" class="input" placeholder="Enter url of page to perform sentiment analysis on">
-              </div>
-              <div class="control">
-                <button class="button is-primary">Submit</button>
-              </div>
-            </div>
-          </form>
+  <!-- place form code here for submitting the url -->
+  <div class="columns">
+    <div class="column is-offset-2 is-8">
+      <form action="{{ url_for('results') }}" method="POST">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input type="text" name="url" class="input" placeholder="http://example.com">
+          </div>
+          <div class="control">
+            <button class="button is-primary">Submit</button>
+          </div>
         </div>
-      </div>
-
+      </form>
     </div>
   </div>
-</section>
+
 {% endblock %}
 ```
+
 *** index-with-form.png ***
 
-The app is now capable of accepting a url representing a page to perform sentiment analysis on so, I better get going on implementing the text analytics functionality. As already alluded to in the results(...) view function comment I first need to fetch the page using the POSTed url which I can do by importing the requests library and calling it's requests.get(...) method passing it the url.  This is a HTTP request being made with unvalidated posted url string that may or may not point to a real web resource so, an exception being raised is a real posibility. In the event of an exception being raised an error message is shown to the user. (set up message flashing for this).
+The app is capable of accepting a url representing a page to perform sentiment analysis on so, I can now implement the text analytics functionality. As already alluded to in the results(...) view function comments first, the page needs fetched using the POSTed url. To accomplish this I import the requests library and call requests.get(...) method with the url.  This is a HTTP request being made with an unvalidated url that may or may not point to a real web resource so, an exception being raised is a real posibility. In the event of an exception being raised an error message is shown to the user. 
 
+To show error messages I will use Flask's message flashing functionality via the flash method that was imported from Flask package earlier. Additionally, I need to give the application a secret key because message flashing utilizes the session which requires a secret key to be set in the app instance's config dict as shown below.
+
+```
+app = Flask(__name__, instance_relative_config=True)
+    
+app.config.update(SECRET_KEY='flaskisawesome')
+```
+
+Now within if a web page is not successfully returned the flash(...) method is called and the user is redirected to the index.html page.
+
+```
+try:
+    # fetch page associated with url using requests
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        raise RuntimeError()
+
+except:
+    # Give error message that this was an invalid url
+    flash('Invalid url. Please fix and resubmit.')
+    return redirect(url_for('index'))
+```
+
+Some work is neeeded to see the flashed message in the UI. Over in the base.html, below the comment for messages, I add a {% with ... %} template block for invoking the get_flashed_messages template function available to all templates and assign the returned collection to a messages variable which is then iterated over for displaying. 
+
+
+```
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sentializer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma-0.7.5/css/bulma.min.css') }}">
+</head>
+<body>
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+          <a href="/" class="navbar-item">Sentalizer</a>
+        </div>
+    </div>
+  </nav>
+  
+  <section class="hero is-light is-fullheight-with-navbar">
+    <div class="hero-head">
+      <div class="container has-text-centered">
+          {% block heading %}{% endblock %}
+        
+        <!-- user message can go in the section -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <article class="message is-centered" style="width: 500px; margin: auto;">
+            <div class="message-body">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          </article>
+          {% endif %}
+        {% endwith %}
+
+      </div>
+    </div>
+
+    <div class="hero-body">
+      <div class="container">
+    
+        {% block main %}{% endblock %}
+    
+      </div>
+    </div>
+
+  </section>
+
+</body>
+</html>
+
+```
+
+*** index-with-error.png ***
+
+
+Next up is to import the BeautifulSoup class from the bs4 package as well as the TextBlob class from from the textblob package. Assuming webpage is sucessfully fetched and program control passes through the try / except section then the returned content is parsed via into a queryable  Document Object Model (DOM) representation in a BeautifulSoup object and assigned to a soup variable. The h1 element, or the page title if an h1 is not present, is extracted from the soup variable before passing all viewable text to TextBlob during it's instantiation then assigned to a variable named blob.
+
+```
+@app.route('/results', methods=('POST',))
+def results():
+    url = request.form.get('url')
+
+    try:
+        # fetch page associated with url using requests
+        response = requests.get(url)
+
+        if response.status_code != 200:
+            raise RuntimeError()
+
+    except:
+        # Give error message that this was an invalid url
+        flash('Invalid url. Please fix and resubmit.')
+        return redirect(url_for('index'))
+
+    # parse results using BeautifulSoup
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    if soup.find('h1'):
+        header = soup.find('h1')
+    else:
+        header = soup.title.get_text()
+
+    # create TextBlob instance
+    blob = TextBlob(soup.get_text())
+```
 
 
 ### Deploying to Virtual Private Server (VPS)

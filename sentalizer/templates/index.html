@@ -10,5 +10,19 @@
 {% block main %}
 
   <!-- place form code here for submitting the url -->
+  <div class="columns">
+    <div class="column is-offset-2 is-8">
+      <form action="{{ url_for('results') }}" method="POST">
+        <div class="field has-addons">
+          <div class="control is-expanded">
+            <input type="text" name="url" class="input" placeholder="http://example.com">
+          </div>
+          <div class="control">
+            <button class="button is-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 
 {% endblock %}
