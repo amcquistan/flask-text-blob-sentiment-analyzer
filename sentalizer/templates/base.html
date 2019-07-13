@@ -17,7 +17,24 @@
     </div>
   </nav>
   
-  {% block main %}{% endblock %}
+  <section class="hero is-light is-fullheight-with-navbar">
+    <div class="hero-head">
+      <div class="container">
+          {% block heading %}
+          <p class="title has-text-centered">
+            Perform Sentiment Analysis
+          </p>
+          {% endblock %}
+        
+        <!-- user message can go in the section -->
+        
+        
+      </div>
+    </div>
+  
+    {% block main %}{% endblock %}
+    
+  </section>
 
 </body>
 </html>
