@@ -17,7 +17,25 @@
     </div>
   </nav>
   
-  {% block main %}{% endblock %}
+  <section class="hero is-light is-fullheight-with-navbar">
+    <div class="hero-head">
+      <div class="container">
+          {% block heading %}{% endblock %}
+        
+        <!-- user message can go in the section -->
+        
+      </div>
+    </div>
+
+    <div class="hero-body">
+      <div class="container">
+    
+        {% block main %}{% endblock %}
+    
+      </div>
+    </div>
+
+  </section>
 
 </body>
 </html>
