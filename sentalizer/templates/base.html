@@ -1,0 +1,52 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Sentializer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bulma-0.7.5/css/bulma.min.css') }}">
+</head>
+<body>
+  <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+          <a href="/" class="navbar-item">Sentalizer</a>
+        </div>
+    </div>
+  </nav>
+  
+  <section class="hero is-light is-fullheight-with-navbar">
+    <div class="hero-head">
+      <div class="container has-text-centered">
+          {% block heading %}{% endblock %}
+        
+        <!-- user message can go in the section -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          <article class="message is-centered" style="width: 500px; margin: auto;">
+            <div class="message-body">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          </article>
+          {% endif %}
+        {% endwith %}
+
+      </div>
+    </div>
+
+    <div class="hero-body">
+      <div class="container">
+    
+        {% block main %}{% endblock %}
+    
+      </div>
+    </div>
+
+  </section>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!-- results.html -->
+{% extends 'base.html' %}
+
+{% block heading %}
+<p class="title has-text-centered">
+  Sentiment Result
+</p>
+{% endblock %}
+
+{% block main %}
+
+  <!-- place sentiment result tiles below -->
+  
+  <div class="box">
+    <p class="title has-text-centered">
+      <a target="_BLANK" href="{{ page_results.url }}">
+        {{ page_results.header }}
+      </a>
+    </p>
+  </div>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Overall Polarity: {{ page_results.overall.polarity|round(2) }}
+        </p>
+      </div>
+    </div>
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Overall Subjectivity: {{ page_results.overall.subjectivity|round(2) }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Most Polar Sentence: {{ page_results.most_polar_sentence.sentiment.polarity|round(2) }}
+        </p>
+        <p class='has-text-centered'>{{ page_results.most_polar_sentence }}</p>
+      </div>
+    </div>
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Least Polar Sentence: {{ page_results.least_polar_sentence.sentiment.polarity|round(2) }}
+        </p>
+        <p class='has-text-centered'>{{ page_results.least_polar_sentence }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tile is-ancestor">
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Most Objective Sentence: {{ page_results.most_objective_sentence.sentiment.subjectivity|round(2) }}
+        </p>
+        <p class='has-text-centered'>{{ page_results.most_objective_sentence }}</p>
+      </div>
+    </div>
+    <div class="tile is-parent is-6">
+      <div class="tile is-child box">
+        <p class="title has-text-centered">
+          Most Subjective Sentence: {{ page_results.most_subjective_sentence.sentiment.subjectivity|round(2) }}
+        </p>
+        <p class='has-text-centered'>{{ page_results.most_subjective_sentence }}</p>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
